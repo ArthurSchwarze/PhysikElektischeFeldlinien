@@ -14,27 +14,19 @@ public class MoveParticle : MonoBehaviour
     private double e0;
     private float constantChange;
     private int lineCount = 1;
-    private bool drawAndMove = true;
 
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         lineRenderer = transform.GetComponent<LineRenderer>();
         worldData = GameObject.Find("World").GetComponent<Data>();
+
         lineRenderer.positionCount = lineCount;
         lineRenderer.SetPosition(0, transform.position);
+
+        lineRenderer.positionCount = lineCount;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (drawAndMove) 
-        {
-            MoveAndDraw();
-        }
-    }
-
-    private void MoveAndDraw() 
+    public void MoveAndDraw() 
     {
         while (true)
         {
@@ -56,7 +48,7 @@ public class MoveParticle : MonoBehaviour
                 sumOfCharge += ((charge) / Mathf.Pow((Mathf.Pow(CorDiff.x, 2f) + Mathf.Pow(CorDiff.y, 2f) + Mathf.Pow(CorDiff.z, 2f)), 3f / 2f)) * new Vector3(CorDiff.x, CorDiff.y, CorDiff.z);
             }
 
-            movementVector = sumOfCharge * Time.deltaTime * 100f;
+            movementVector = sumOfCharge * Time.deltaTime * 30f;
 
             var Coordinates = new List<float> { Mathf.Abs(movementVector.x), Mathf.Abs(movementVector.y), Mathf.Abs(movementVector.z) };
 
@@ -76,30 +68,36 @@ public class MoveParticle : MonoBehaviour
 
             lineCount++;
 
-            if (lineCount < 450) //2450 originally
+            foreach (ObjectAttributes circle in worldData.chargedObjects)
+            {
+                Vector3 objectDistance = transform.position - circle.transform.position;
+                if (Mathf.Abs(objectDistance.magnitude) < circle.GetComponent<SphereCollider>().radius && Mathf.Sign(circle.GetComponent<ObjectAttributes>().charge) == -1)
+                {
+                    lineRenderer.positionCount = lineCount;
+                    lineRenderer.SetPosition(lineCount - 1, balancesMovement + Cor);
+
+                    //Debug.Log(Mathf.Abs(objectDistance.magnitude));
+                    GetComponent<MeshRenderer>().enabled = false;
+
+                    circle.GetComponent<ObjectAttributes>().collectPoints(transform.position);
+                    worldData.totalNormalLines--;
+
+                    return;
+                }
+            }
+                
+
+            if (lineCount < 2000) //2450 originally
             {
                 lineRenderer.positionCount = lineCount;
                 lineRenderer.SetPosition(lineCount - 1, balancesMovement + Cor);
             }
             else
             {
-                drawAndMove = false;
-                Debug.Log(lineCount);
+                //Debug.Log(lineCount);
                 GetComponent<MeshRenderer>().enabled = false;
+                worldData.totalNormalLines--;
                 return;
-            }
-        }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        var chargeScript = collision.gameObject.GetComponent<ObjectAttributes>();
-        
-        if (chargeScript)
-        {
-            if (chargeScript.charge == -1)
-            {
-                lineCount = 2500;
             }
         }
     }

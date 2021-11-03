@@ -4,32 +4,38 @@ using UnityEngine;
 
 public class FlyCamera : MonoBehaviour
 {
-
-    /*
-    Writen by Windexglow 11-13-10.  Use it, edit it, steal it I don't care.  
-    Converted to C# 27-02-13 - no credit wanted.
-    Simple flycam I made, since I couldn't find any others made public.  
-    Made simple to use (drag and drop, done) for regular keyboard layout  
-    wasd : basic movement
-    shift : Makes camera accelerate
-    space : Moves camera on X and Z axis only.  So camera doesn't gain any height*/
-
-
     float mainSpeed = 10.0f; //regular speed
     float shiftAdd = 250.0f; //multiplied by how long shift is held.  Basically running
     float maxShift = 1000.0f; //Maximum speed when holdin gshift
-    float camSens = 0.25f; //How sensitive it with mouse
-    private Vector3 lastMouse = new Vector3(255, 255, 255); //kind of in the middle of the screen, rather than at the top (play)
+    float camSens = 0.24f; //How sensitive it with mouse
+    private Vector3 lastMouse = new Vector3(255, 255, 255);
+    private Vector3 lastMouseMove;
     private float totalRun = 1.0f;
 
     void Update()
     {
-        lastMouse = Input.mousePosition - lastMouse;
-        lastMouse = new Vector3(-lastMouse.y * camSens, lastMouse.x * camSens, 0);
-        lastMouse = new Vector3(transform.eulerAngles.x + lastMouse.x, transform.eulerAngles.y + lastMouse.y, 0);
-        transform.eulerAngles = lastMouse;
-        lastMouse = Input.mousePosition;
-        //Mouse  camera angle done.  
+        //if (Input.mouseScrollDelta != Vector2.zero)
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            lastMouse = Input.mousePosition;
+        }
+
+        if (Input.GetMouseButtonDown(2))
+        {
+            lastMouseMove = Input.mousePosition;
+        }
+
+        if (Input.GetMouseButton(1))
+        {
+            lastMouse = Input.mousePosition - lastMouse;
+            lastMouse = new Vector3(-lastMouse.y * camSens, lastMouse.x * camSens, 0);
+            lastMouse = new Vector3(transform.eulerAngles.x + lastMouse.x, transform.eulerAngles.y + lastMouse.y, 0);
+            transform.eulerAngles = lastMouse;
+            lastMouse = Input.mousePosition;
+            //Mouse  camera angle done. 
+        }
+         
 
         //Keyboard commands
         Vector3 p = GetBaseInput();
@@ -50,15 +56,15 @@ public class FlyCamera : MonoBehaviour
             }
 
             p = p * Time.deltaTime;
-            Vector3 newPosition = transform.position;
+            /*Vector3 newPosition = transform.position;
             if (Input.GetKey(KeyCode.Space))
             { //If player wants to move on X and Z axis only
                 transform.Translate(p);
                 newPosition.x = transform.position.x;
                 newPosition.z = transform.position.z;
                 transform.position = newPosition;
-            }
-            else
+            } 
+            else*/
             {
                 transform.Translate(p);
             }
@@ -66,32 +72,21 @@ public class FlyCamera : MonoBehaviour
     }
 
     private Vector3 GetBaseInput()
-    { //returns the basic values, if it's 0 than it's not active.
+    { 
         Vector3 p_Velocity = new Vector3();
-        if (Input.GetKey(KeyCode.W))
+        if (Input.mouseScrollDelta != Vector2.zero)
         {
-            p_Velocity += new Vector3(0, 0, 1);
+            p_Velocity += new Vector3(0, 0, Input.mouseScrollDelta.y * 2);
         }
-        if (Input.GetKey(KeyCode.S))
+
+        if (Input.GetMouseButton(2))
         {
-            p_Velocity += new Vector3(0, 0, -1);
+            lastMouseMove = Input.mousePosition - lastMouseMove;
+            p_Velocity += 1.5f * new Vector3(-lastMouseMove.x * camSens, -lastMouseMove.y * camSens, 0);
         }
-        if (Input.GetKey(KeyCode.A))
-        {
-            p_Velocity += new Vector3(-1, 0, 0);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            p_Velocity += new Vector3(1, 0, 0);
-        }
-        /*if (Input.GetKey(KeyCode.Space))
-        {
-            p_Velocity += new Vector3(0, 1, 0);
-        }
-        if (Input.GetKey(KeyCode.LeftShift))
-        {
-            p_Velocity += new Vector3(0, -1, 0); 
-        } */
+
+        lastMouseMove = Input.mousePosition;
+
         return p_Velocity;
     }
 }

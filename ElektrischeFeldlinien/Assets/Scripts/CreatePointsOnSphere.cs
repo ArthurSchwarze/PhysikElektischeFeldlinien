@@ -5,11 +5,20 @@ using UnityEngine;
 public class CreatePointsOnSphere : MonoBehaviour
 {
     public Material raycastColour;
+    public float lineThickness;
+    public int sphereNumber;
+
+    private Data worldData;
 
     void Start()
     {
+        worldData = GameObject.Find("World").GetComponent<Data>();
+        sphereNumber = worldData.sphereNumber;
+        lineThickness = worldData.lineThickness;
+        raycastColour = worldData.rayCastColour;
+        
         float scaling = 0.5f;
-        Vector3[] pts = PointsOnSphere(48);
+        Vector3[] pts = PointsOnSphere(sphereNumber);
         List<GameObject> uspheres = new List<GameObject>();
         int i = 0;
 
@@ -22,9 +31,13 @@ public class CreatePointsOnSphere : MonoBehaviour
             uspheres[i].gameObject.AddComponent<MoveParticle>();
 
             uspheres[i].gameObject.GetComponent<LineRenderer>().material = raycastColour;
-            uspheres[i].gameObject.GetComponent<LineRenderer>().startWidth = 0.02f;
+            uspheres[i].gameObject.GetComponent<LineRenderer>().startWidth = lineThickness;
+            uspheres[i].gameObject.GetComponent<MoveParticle>().MoveAndDraw();
             i++;
         }
+
+        worldData.totalNormalLines += sphereNumber;
+        worldData.ResetObjectAtribute();
     }
 
     Vector3[] PointsOnSphere(int n)
