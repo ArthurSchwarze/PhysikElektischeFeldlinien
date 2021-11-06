@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CreateNewObject : MonoBehaviour
 {
+    //Creates new UI blocks that are used for creation more Spheres in the space
+
     private GameObject currentUIBlock;
     private GameObject canvasObject;
     public GameObject nextUIBlock;
@@ -22,10 +24,11 @@ public class CreateNewObject : MonoBehaviour
         deleterGroup = GameObject.Find("Delete").GetComponent<CanvasGroup>();
         worldData = GameObject.Find("World").GetComponent<Data>();
     }
-
+    
+    //Creates new UI clones
     public void OnButtonPress()
     {
-        if (amountOfClones == 11)
+        if (amountOfClones == 10) //maximum spheres at once (set at 10)
         {
             return;
         }
@@ -47,6 +50,7 @@ public class CreateNewObject : MonoBehaviour
         deleterGroup.gameObject.transform.position -= new Vector3(0, 75, 0);
     }
 
+    //Deletes the newest UI clone
     public void DestroyClone()
     {
         amountOfClones--;

@@ -5,45 +5,52 @@ using UnityEngine.UI;
 
 public class ControllCreation : MonoBehaviour
 {
+    //Input fiels for the position of the poles (x, y, z) and charge
     public InputField controllerCharge;
     public InputField controllerX;
     public InputField controllerY;
     public InputField controllerZ;
     
+    //Saves for the data of the poles
     public int textCoordinateX;
     public int textCoordinateY;
     public int textCoordinateZ;
     public int textCharge; 
     
+    //Old saves from previous runs, to check the difference
     public int oldCoordinateX;
     public int oldCoordinateY;
     public int oldCoordinateZ;
     public int oldCharge;
 
-    public GameObject objectSelf;
-    private int numberOrder = 1;
-    private Data worldData;
+    public GameObject objectSelf; //The created GameObject
+    private int numberOrder = 1; 
+    private Data worldData; //Save of all data
 
     // Start is called before the first frame update
     void Start()
     {
         worldData = GameObject.Find("World").GetComponent<Data>();
 
+        //Sets all inputs
         controllerCharge = transform.GetChild(1).GetComponent<InputField>();
         controllerX = transform.GetChild(2).GetComponent<InputField>();
         controllerY = transform.GetChild(3).GetComponent<InputField>();
         controllerZ = transform.GetChild(4).GetComponent<InputField>();
 
+        //Creates the object that will be later activated coordinates and charge are present
         objectSelf = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         objectSelf.GetComponent<MeshRenderer>().enabled = false;
         objectSelf.AddComponent<ObjectAttributes>();
         objectSelf.GetComponent<ObjectAttributes>().enabled = false;
 
+        //Sets comparable coordinates, otherwise these would be 0, because int can't be NaN
         oldCoordinateX = 1000;
         oldCoordinateY = 1000;
         oldCoordinateZ = 1000;
         oldCharge = 1000;
 
+        //Makes the UI visible
         objectSelf.GetComponent<ObjectAttributes>().charge = 1;
         transform.gameObject.GetComponent<CanvasGroup>().alpha = 1f;
         transform.gameObject.GetComponent<CanvasGroup>().blocksRaycasts = true;
@@ -52,6 +59,8 @@ public class ControllCreation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Checks all the input fields and looks if they are withing in the defined space
+
         if (int.TryParse(controllerX.text, out textCoordinateX))
         {
             if (textCoordinateX != oldCoordinateX)
@@ -109,6 +118,7 @@ public class ControllCreation : MonoBehaviour
         }
     }
 
+    //If every variable is set this starts the activation process
     public void ChangedVariable()
     {
         if (controllerX.text != "" && controllerY.text != "" && controllerZ.text != "" && controllerCharge.text != "")
@@ -117,6 +127,7 @@ public class ControllCreation : MonoBehaviour
         }
     }
 
+    //Waits for changes and then makes the object visible
     IEnumerator WaitTime()
     {
         objectSelf.GetComponent<ObjectAttributes>().enabled = true;

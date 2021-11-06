@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class OtherMoveParticle : MonoBehaviour
 {
+    //Same usage as "MoveParticle", only that it has the vector inverted for the returning lines
+    //See comments in "MoveParticle"
+
     public Vector3 movementVector;
     public Vector3 sumOfCharge;
 

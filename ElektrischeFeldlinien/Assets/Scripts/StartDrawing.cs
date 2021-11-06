@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-
 public class StartDrawing : MonoBehaviour
 {
+    //Used for drawing lines after new creation or while the poles are moving, when not static
+
     private Data worldData;
     private Transform startButton;
     private MoveParticle[] particles;
@@ -25,6 +26,7 @@ public class StartDrawing : MonoBehaviour
         startButton = GameObject.Find("StartProcess").transform.GetChild(0);
     }
 
+    //Clears old lines and starts the new lines
     public void StartDrawingLines()
     {
         if (worldData.restartable)
@@ -36,6 +38,7 @@ public class StartDrawing : MonoBehaviour
         
     }
 
+    //Clears lines for every existing line renderer
     private void ClearRun()
     {
         foreach (ObjectAttributes parent in worldData.chargedObjects)
@@ -52,6 +55,7 @@ public class StartDrawing : MonoBehaviour
         }
     }
 
+    //Controlls the button for starting and stopping the moving of the poles
     public void StartMovingPoles()
     {
         if (!isMovingPoles)
@@ -72,6 +76,7 @@ public class StartDrawing : MonoBehaviour
         isMovingPoles = false;
     }
 
+    //Initiates the drawing of the lines when the system was started
     private void Update()
     {
         if (isMovingPoles)
@@ -84,7 +89,8 @@ public class StartDrawing : MonoBehaviour
         }
     }
 
-    private void MoveSelf(ObjectAttributes sphere)
+    //Movement when the poles aren't static
+    private void MoveSelf(ObjectAttributes sphere) //Copies the movement from "MoveObject", just slower for performance
     {
         Vector3 sumOfCharge = Vector3.zero;
 

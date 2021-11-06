@@ -5,6 +5,7 @@ ScriptsOnlyBuild:
     - Data
     - FlyCamera
     - StartDrawing
+    - StartSystem
     Unity.Rider.Editor.dll:
     - Packages.Rider.Editor.UnitTesting.CallbackData
     UnityEditor.TestRunner.dll:
@@ -51,21 +52,23 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 2220}
     - Class: 114
-      Script: {instanceID: 2648}
+      Script: {instanceID: 2650}
     - Class: 114
-      Script: {instanceID: 2828}
+      Script: {instanceID: 2830}
     - Class: 114
-      Script: {instanceID: 2976}
+      Script: {instanceID: 2978}
     - Class: 114
-      Script: {instanceID: 3054}
+      Script: {instanceID: 3056}
     - Class: 114
-      Script: {instanceID: 3124}
+      Script: {instanceID: 3126}
     - Class: 114
-      Script: {instanceID: 3282}
+      Script: {instanceID: 3284}
     - Class: 114
-      Script: {instanceID: 3372}
+      Script: {instanceID: 3364}
     - Class: 114
-      Script: {instanceID: 3508}
+      Script: {instanceID: 3376}
+    - Class: 114
+      Script: {instanceID: 3512}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -99,7 +102,7 @@ ScriptsOnlyBuild:
     className: Image
   - hash:
       serializedVersion: 2
-      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+      Hash: 3efce671ef04e16d0404ed2a5a131621
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: StartDrawing
@@ -321,7 +324,7 @@ ScriptsOnlyBuild:
     className: RawImage
   - hash:
       serializedVersion: 2
-      Hash: cd744183e6786bafe85eedd36e9e07f9
+      Hash: a25ac6e61ff8fec487518203e3d8744e
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: ControllCreation
@@ -495,10 +498,16 @@ ScriptsOnlyBuild:
     className: TestResultRendererCallback
   - hash:
       serializedVersion: 2
-      Hash: fc77a6abe9224a39fcc4c27964647cc6
+      Hash: aec214ff8964d53c1f84c5357c7210b6
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: Data
+  - hash:
+      serializedVersion: 2
+      Hash: 71bb6a6b6c8f052f948db64c7dd3ca4f
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: StartSystem
   - hash:
       serializedVersion: 2
       Hash: 748dd2a2a28da4e618912da5ac45684b
@@ -574,5 +583,5 @@ ScriptsOnlyBuild:
   platform: 5
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: C:/Users/aschw/OneDrive/Desktop/Builds/Elektrische Feldlinien Build/Elektrische
-    Feldlinien Simulation.exe
+  playerPath: C:/Users/aschw/OneDrive/Desktop/Builds/Elektrische Feldlinien Build
+    Final/Elektrische Feldlinien Simulation.exe

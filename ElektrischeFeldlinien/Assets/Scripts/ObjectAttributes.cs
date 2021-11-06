@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class ObjectAttributes : MonoBehaviour
 {
-    // Start is called before the first frame update
+    //Used for storing all data of the poles and for creating the returning lines
 
     private float scale;
     public float charge = 1;
 
-    public List<Vector3> nearPoints = new List<Vector3>();
+    public List<Vector3> nearPoints = new List<Vector3>(); //All points that landed withing it's vicinity 
 
     private Data worldData;
     public bool returned = false;
@@ -19,6 +19,7 @@ public class ObjectAttributes : MonoBehaviour
 
     void Start()
     {
+        //Pulls data from world.data
         worldData = GameObject.Find("World").GetComponent<Data>();
 
         materialNegative = worldData.materialNegative;
@@ -28,9 +29,11 @@ public class ObjectAttributes : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        scale = Mathf.Pow(Mathf.Abs(charge), 1f / 3f);
+        //Is used to adust the size of the pole according to it's charge
+        scale = Mathf.Pow(Mathf.Abs(charge), 1f / 3f); //Radius is doubled when the charge is the 8thfold
         gameObject.transform.localScale = new Vector3(scale, scale, scale);
 
+        //Changes the colour of positive and negative poles
         if (!returned && Mathf.Sign(charge) == -1)
         {
             returned = true;
@@ -48,6 +51,7 @@ public class ObjectAttributes : MonoBehaviour
         }
     }
 
+    //Collects all points in the vicinity
     public void collectPoints(Vector3 point)
     {
         nearPoints.Add(point);

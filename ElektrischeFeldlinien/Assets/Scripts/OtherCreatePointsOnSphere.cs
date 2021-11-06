@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class OtherCreatePointsOnSphere : MonoBehaviour
 {
+    //Mirrors the "CreatePointsOnSphere, only that the Movement Vector is inverted
+    //Used for the returning lines
+
     public Material raycastColour;
     public float lineThickness;
 
@@ -12,6 +15,7 @@ public class OtherCreatePointsOnSphere : MonoBehaviour
 
     void Start()
     {
+        //Same things as "CreatePointsOnSphere"
         worldData = GameObject.Find("World").GetComponent<Data>();
         pointsOnSphere = worldData.sphereNumber;
         lineThickness = worldData.lineThickness;
@@ -35,7 +39,7 @@ public class OtherCreatePointsOnSphere : MonoBehaviour
             uspheres[i].transform.position = value * scaling + transform.position;
 
             Vector3 position = uspheres[i].transform.position; // position of created object
-            foreach (Vector3 vector in possibleNearPoints)
+            foreach (Vector3 vector in possibleNearPoints) //Checks for near points, where we already have a line
             {
                 float distance = Mathf.Abs((vector - position).sqrMagnitude);
                 distancePoints.Add(distance);
@@ -45,7 +49,7 @@ public class OtherCreatePointsOnSphere : MonoBehaviour
 
             uspheres[i].gameObject.GetComponent<MeshRenderer>().enabled = false;
             
-            if (smallestDistance > 0.06f)
+            if (smallestDistance > 0.06f) //Doesn't draw a line if there is one already in it's vicinity
             {
                 uspheres[i].gameObject.AddComponent<LineRenderer>();
                 uspheres[i].gameObject.AddComponent<OtherMoveParticle>();
@@ -68,6 +72,7 @@ public class OtherCreatePointsOnSphere : MonoBehaviour
         worldData.secondPhaseStarted = true;
     }
 
+    //Same thing as before
     Vector3[] PointsOnSphere(int n)
     {
         List<Vector3> upts = new List<Vector3>();

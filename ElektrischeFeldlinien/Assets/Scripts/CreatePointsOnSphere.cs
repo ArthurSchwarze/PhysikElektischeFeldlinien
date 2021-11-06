@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CreatePointsOnSphere : MonoBehaviour
 {
+    //Creates the points that will be later moved to create field lines
+
     public Material raycastColour;
     public float lineThickness;
     public int sphereNumber;
@@ -12,6 +14,7 @@ public class CreatePointsOnSphere : MonoBehaviour
 
     void Start()
     {
+        //Pulls data from world.data
         worldData = GameObject.Find("World").GetComponent<Data>();
         sphereNumber = worldData.sphereNumber;
         lineThickness = worldData.lineThickness;
@@ -22,8 +25,9 @@ public class CreatePointsOnSphere : MonoBehaviour
         List<GameObject> uspheres = new List<GameObject>();
         int i = 0;
 
-        foreach (Vector3 value in pts)
+        foreach (Vector3 value in pts) //Creates points along the sphere with equal spacing
         {
+            //Adds all components to use with the line renderer
             uspheres.Add(GameObject.CreatePrimitive(PrimitiveType.Sphere));
             uspheres[i].transform.parent = transform;
             uspheres[i].transform.position = value * scaling + transform.position;
@@ -40,7 +44,8 @@ public class CreatePointsOnSphere : MonoBehaviour
         worldData.ResetObjectAtribute();
     }
 
-    Vector3[] PointsOnSphere(int n)
+    //Creates all points on the sphere
+    Vector3[] PointsOnSphere(int n) 
     {
         List<Vector3> upts = new List<Vector3>();
         float inc = Mathf.PI * (3 - Mathf.Sqrt(5));
@@ -53,15 +58,15 @@ public class CreatePointsOnSphere : MonoBehaviour
 
         for (var k = 0; k < n; k++)
         {
-            y = k * off - 1 + (off / 2);
+            y = k * off - 1 + (off / 2); //Makes the distribution along the y-axis
             r = Mathf.Sqrt(1 - y * y);
             phi = k * inc;
-            x = Mathf.Cos(phi) * r;
-            z = Mathf.Sin(phi) * r;
+            x = Mathf.Cos(phi) * r; //Distribution along the x-axis
+            z = Mathf.Sin(phi) * r; //Distrivution along the z-axis
 
             upts.Add(new Vector3(x, y, z));
         }
-        Vector3[] pts = upts.ToArray();
+        Vector3[] pts = upts.ToArray(); //Adds new point to the array
         return pts;
     }
 }

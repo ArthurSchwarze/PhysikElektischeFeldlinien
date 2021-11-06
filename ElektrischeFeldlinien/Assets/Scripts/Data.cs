@@ -5,31 +5,30 @@ using UnityEngine.UI;
 
 public class Data : MonoBehaviour
 {
-    // Start is called before the first frame update
-    public double e0;
+    public double e0; //gloval variable of e0
     
-    public int objectCount;
-    public int sphereNumber = 24;
-    public float lineThickness = 0.03f;
+    public int objectCount; //number of poles used at the moment
+    public int sphereNumber = 24; //number of lines made per pole ar maximum
+    public float lineThickness = 0.03f; //thickness of the lines for the line renderer
 
-    public ObjectAttributes[] chargedObjects;
-    public Material rayCastColour;
+    public ObjectAttributes[] chargedObjects; //all poles
+    public Material rayCastColour; //colour of the line renderer
 
-    public int totalNormalLines;
-    public int totalOppositeLines;
+    public int totalNormalLines; //number of lines going from positive to negative
+    public int totalOppositeLines; //number of lines going from negative to positive 
 
-    public bool secondPhaseStarted = false;
-    public bool restartable = true;
-    public bool reajustLines = false;
+    public bool secondPhaseStarted = false; //see if the return has happened
+    public bool restartable = true; //see if you can restart the drawing of the lines
+    public bool reajustLines = false; //see if you can redraw the lines
 
-    public Material materialPositive;
-    public Material materialNegative;
+    public Material materialPositive; //material for positive poles
+    public Material materialNegative; //material for negative poles
 
     void Start()
     {
-        e0 = 8.85 * Mathf.Pow(10, -12);
+        e0 = 8.85 * Mathf.Pow(10, -12); 
 
-        chargedObjects = GameObject.FindObjectsOfType<ObjectAttributes>();
+        chargedObjects = GameObject.FindObjectsOfType<ObjectAttributes>(); //finds all charged objects
         objectCount = chargedObjects.Length;
 
         GameObject.Find("InputCreation").gameObject.GetComponent<CanvasGroup>().alpha = 0f;
@@ -39,11 +38,14 @@ public class Data : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (totalOppositeLines == 0 && secondPhaseStarted)
+        //looks if you can start with drawing the lines back
+        if (totalOppositeLines == 0 && secondPhaseStarted) 
         {
             restartable = true;
         }
-        chargedObjects = GameObject.FindObjectsOfType<ObjectAttributes>();
+
+        //finds all poles and eliminates those, that aren't active at the time
+        chargedObjects = GameObject.FindObjectsOfType<ObjectAttributes>(); 
         foreach (ObjectAttributes charged in chargedObjects)
         {
             if (charged.name != "sphere1")
@@ -53,9 +55,9 @@ public class Data : MonoBehaviour
                 chargedObjects = (randoms.ToArray());
             }
         }
-        
         objectCount = chargedObjects.Length;
 
+        //looks if it has to draw lines again (comming from the deletion script of the UI)
         if (reajustLines && transform.gameObject.GetComponent<CreateNewObject>().amountOfClones == objectCount)
         {
             reajustLines = false;
@@ -63,10 +65,12 @@ public class Data : MonoBehaviour
         }
     }
 
+    //called when lines need to be draw after creating the objects
     public void StartSystem()
     {
         secondPhaseStarted = false;
 
+        //takes every pole and adds the script for drawing lines if they fit the criteria of having a positive charge
         foreach (ObjectAttributes sphere in chargedObjects)
         {
             float chargeSphere = sphere.GetComponent<ObjectAttributes>().charge;
@@ -77,6 +81,7 @@ public class Data : MonoBehaviour
         }
     }
 
+    //Same as StartSystem, but for negative charges
     public void ResetObjectAtribute()
     {
         foreach (ObjectAttributes sphere in chargedObjects)
